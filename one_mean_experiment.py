@@ -27,13 +27,6 @@ class OneMeanExperiment:
         self.max_location = np.array([float('-inf'),float('-inf')], dtype=object)
         self.is_random = True if 'random' in self.r_data.keys() else False
         self.__compute()
-        
-        # if not self.X and not 'random' in self.r_data.keys():
-        #     print('''Usage: please include dataset, kwargs for handling the data.
-        #     If you want a random generated dataset then enter random=True
-        #     and also enter constraints: for example: low=0.0, high=0.2, size=(100,2)
-        #     ''')
-        #     exit()
 
 
     def __compute(self):
@@ -53,10 +46,6 @@ class OneMeanExperiment:
             self.X = np.random.uniform(low=self.r_data['low'], high=self.r_data['high'], size=self.r_data['size'])
             self.first_x = copy.deepcopy(self.X)
             
-        # elif not self.X:
-        #     print("Provide a dataset or generate some random data")
-        #     exit()
-
         else:
             self.first_x = copy.deepcopy(self.X)
             min_point = np.array([float('inf'),float('inf')], dtype=object)
@@ -136,25 +125,14 @@ class OneMeanExperiment:
         ax.scatter(self.X[:,0], self.X[:,1], c=[blue])
         ax.scatter(x, y, c=colors)
 
-        # ax.set_xticks(np.arange(0.0, 1.1, 0.1))
-        # ax.set_yticks(np.arange(0.0, 1.1, 0.1))
-
         plt.show()
    
     def show_analysis(self, name):
-        # red = [1, 0, 0]
         blue = [0, 0, 1]
-        # colors = [red]
-        # x = self.poison_count_arr
-        # y = self.scores
 
         fig, ax = plt.subplots(figsize=(15, 10))
 
         ax.scatter(self.poison_count_arr, self.scores, c=[blue])
-        # ax.scatter(x, y, c=colors)
-
-        # ax.set_xticks(np.arange(0.0, 1.1, 0.1))
-        # ax.set_yticks(np.arange(0.0, 1.1, 0.1))
 
         plt.title(name)
         plt.xlabel("Number of Poison Points (m)")
@@ -196,9 +174,6 @@ class OneMeanExperiment:
             current_score  = self.get_score()
             self.poison_count_arr = np.insert(self.poison_count_arr, 0, poison_count)
             self.scores = np.insert(self.scores, 0, previous_score)
-            # print(f"Previous Score: {previous_score}")
-            # print(f"Current Score: {current_score}")
-
 
     def get_analysis(self):
         return self.poison_count_arr, self.scores
@@ -236,7 +211,6 @@ class OneMeanExperiment:
         fig, ax = plt.subplots(figsize=(15, 10))
         ax.plot(x_values, y_values, linestyle="--")
         ax.plot(x3_values, y3_values, linestyle="--")
-        # ax.plot([0.6], [0.16], marker="o", markersize=10, markeredgecolor="red", markerfacecolor="green")
 
         red = [1, 0, 0]
         green = [0,1,0]
@@ -250,33 +224,9 @@ class OneMeanExperiment:
 
         ax.annotate(r'$P^*$', (1,1), color='black',size=16) 
 
-        # ax.set_xticks(np.arange(self.bbox.min_point[0], self.bbox.max_point[0] + ((self.bbox.max_point[0] - self.bbox.min_point[0]) / 10), (self.bbox.max_point[0] - self.bbox.min_point[0]) / 10))
-        # ax.set_yticks(np.arange(self.bbox.min_point[1], self.bbox.max_point[1] + ((self.bbox.max_point[1] - self.bbox.min_point[1]) / 10), (self.bbox.max_point[1] - self.bbox.min_point[1]) / 10))
-
         plt.show()
 
 
     def show_args(self):
         print("args: ", self.X)
         print("kwargs: ", self.r_data)
-
-
-
-
-
-def main():
-    random_experiment = OneMeanExperiment(p1=(0,0), p2=(1,1), random=True, low=0.0, high=0.2, size=(100,2))
-    # random_experiment.get_score()
-    # random_experiment.add_poison(30)
-    # random_experiment.get_score()
-    random_experiment.run_analysis()
-    poison, scores = random_experiment.get_analysis()
-    # print(poison)
-    # print(scores)
-    print(f"Proportion: {random_experiment.get_proportion()}")
-    random_experiment.show_analysis("Random Experiment")
-
-
-
-if __name__ == "__main__":
-    main()
